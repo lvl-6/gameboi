@@ -26,18 +26,23 @@ class Technician(commands.Cog):
     
     @commands.has_role(technician_role)
     @commands.command()
-    async def list_cogs(self, ctx, *, member: discord.Member = None):
+    async def list_cogs(self, ctx, *, args):
         """List the cogs available to this bot"""
-        member = member or ctx.author
+        #member = member or ctx.author
         await ctx.send('Command not yet implemented.')
 
     @commands.has_role(technician_role)
     @commands.command()
-    async def reload(self, ctx, *, member: discord.Member = None):
-        """Reload a cog"""
-        member = member or ctx.author
+    async def reload(self, ctx, extension):
+        """
+        Reload a cog by passing its name after the command (quotes work btw)
+        """
+        #member = ctx.author
         message = ctx.message.content
-        await ctx.send('TODO parse this: ' + message)
+        await ctx.send('Reloading cog: ' + extension)
+        self.bot.reload_extension('cogs.' + extension) # Should call this from root module (gb.py) but fuck me easier said than done
+        #gb.reload_extension(extension)
+        await ctx.send('It should be reloaded now (checks not implemented).')
 
 
 ###############################################################################

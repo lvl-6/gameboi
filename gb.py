@@ -41,8 +41,10 @@ if __name__ == '__main__':
         bot.load_extension(extension)
         logging.print_log('Loaded extension: ' + extension)
 
-async def reload_extension(extension: str):
-    bot.reload_extension(extension)
+# This doesn't get called from the Technician cog btw!
+async def reload_extension(extension: str, ctx):
+    logging.print_log('Received command to reload extension: ')
+    bot.reload_extension('cogs.'+extension)
 
 @bot.event
 async def on_connect():
