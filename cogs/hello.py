@@ -26,10 +26,10 @@ greeting_msg = ('Hello and welcome to the guild, {0.mention}!\n'
 # Configure relevant channel ID's in this dictionary
 # Move to another cog one day
 channel_ids =   {
-                'welcome': 0123456789,
-                'general': 0123456789,
-                'lobby': 0123456789,
-                'bot_commands': 0123456789,
+                'welcome': 123456789,
+                'general': 123456789,
+                'lobby': 123456789,
+                'bot_commands': 123456789,
                 }
 
 
