@@ -26,7 +26,7 @@ bot_token = os.getenv('GBOI_TOKEN')
 ###############################################################################
 
 # We will load only the cogs in this list for security reasons.
-extensions = ['cogs.hello', 'cogs.technician'] # TODO
+extensions = ['cogs.hello', 'cogs.technician', 'cogs.account'] # TODO
 
 bot = BotBase(
     command_prefix = commands.when_mentioned,
