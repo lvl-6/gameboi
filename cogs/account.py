@@ -24,7 +24,22 @@ class Account(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     
-    async def createAccount(member: discord.Member = None):
+    @commands.command()
+    async def register(self, ctx):
+        """Register an account with the bot"""
+        member = ctx.author
+        if Account.accountExists( str(member.id) ) == False:
+            Account.createAccount(member)
+            await ctx.send(
+                    'Account created successfully for {0.id}.\n'
+                    'Welcome to the club!\n'.format(member)
+            )
+        else:
+            await ctx.send(
+                    'An account already exists for {0.id}'.format(member)
+            )
+
+    def createAccount(member: discord.Member = None):
         """Create a Player account for a given member"""
         # TODO: Should utilise Player class once implemented!
         global member_id_list
@@ -36,27 +51,12 @@ class Account(commands.Cog):
             return 'Account created successfully for {0.id}!'.format(member)
 
 
-    async def accountExists(member_id: str):
+    def accountExists(member_id: str):
         """Check if a player account exists"""
         if member_id in member_id_list:
             return True
         else:
             return False
-
-    @commands.command()
-    async def register(self, ctx):
-        """Register an account with the bot"""
-        member = ctx.author
-        if await Account.accountExists( str(member.id) ) == False:
-            await Account.createAccount(member)
-            await ctx.send(
-                    'Account created successfully for {0.id}.\n'
-                    'Welcome to the club!\n'.format(member)
-            )
-        else:
-            await ctx.send(
-                    'An account already exists for {0.id}'.format(member)
-            )
 
 
 ###############################################################################
