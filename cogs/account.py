@@ -28,8 +28,8 @@ class Account(commands.Cog):
     async def register(self, ctx):
         """Register an account with the bot"""
         member = ctx.author
-        if Account.accountExists( str(member.id) ) == False:
-            Account.createAccount(member)
+        if not Account.accountExists(str(member.id)):
+            Account.create_account(member)
             await ctx.send(
                     'Account created successfully for {0.id}.\n'
                     'Welcome to the club!\n'.format(member)
@@ -39,12 +39,13 @@ class Account(commands.Cog):
                     'An account already exists for {0.id}'.format(member)
             )
 
-    def createAccount(member: discord.Member = None):
+    @staticmethod
+    def create_account(member: discord.Member = None):
         """Create a Player account for a given member"""
         # TODO: Should utilise Player class once implemented!
         global member_id_list
         if member == None:
-            # Temporary error return (should probably return an enum).
+            # Temporary error return (should probably throw a proper exception).
             return 'Error! No discord.Member was passed to createAccount().'
         else:
             member_id_list.append( str(member.id) )
