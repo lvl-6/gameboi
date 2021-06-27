@@ -10,8 +10,9 @@
 # 
 ###############################################################################
 
-from game import Game, GameList
-from session import Session
+from lib.game import Game, GameList
+from lib.session import Session
+#from database import Database
 
 
 ###############################################################################
@@ -33,15 +34,23 @@ player.
 and is registered with the bot.
         sessions (List<Session>): List of Sessions this player has RSVPed.
     """
+
+    pkid = -1  # if it's -1, something is wrong
+    discord_id = ''
+    steam_id = ''
+    games = []
+    availability = 0  # should be some sort of Schedule datatype (i.e. 24x7 array list)
+    guilds = ['']
+    sessions = []
+
     def __init__(self, pkid):
         # This constructor should take a primary key "id" and use that to pull
         # the player data from the database to populate member vars.
         self.pkid = pkid
+        self.get_player_data()
 
-    pkid = -1 # if it's -1, something is wrong
-    discord_id = ''
-    steam_id = ''
-    games = []
-    availability = 0 # should be some sort of Schedule datatype (i.e. 24x7 array list)
-    guilds = ['']
-    sessions = []
+    def get_player_data(self):
+        """
+        Pull the player data from the database once the pkid is known and set.
+        """
+        pass

@@ -28,6 +28,7 @@ class Account(commands.Cog):
     async def register(self, ctx):
         """Register an account with the bot"""
         member = ctx.author
+        """ TODO: Delete this, old code.
         if not Account.accountExists(str(member.id)):
             Account.create_account(member)
             await ctx.send(
@@ -38,6 +39,7 @@ class Account(commands.Cog):
             await ctx.send(
                     'An account already exists for {0.id}'.format(member)
             )
+        """
 
     @staticmethod
     def create_account(member: discord.Member = None):

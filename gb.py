@@ -14,11 +14,13 @@ import os
 import discord
 from discord.ext import commands
 from discord.ext.commands import Bot as BotBase
+from lib.database import Database
 
 import lib.logging as logging
 
 version = '0.0.1'
 bot_token = os.getenv('GBOI_TOKEN')
+db = Database()
 
 
 ###############################################################################
