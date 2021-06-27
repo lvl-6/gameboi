@@ -21,7 +21,7 @@ config = configparser.ConfigParser()
 
 if len(sys.argv) == 1:
     print(
-        "You must run this file with an argument to specify what you want to"
+        "You must run this file with an argument to specify what you want to "
         "configure, or -h for help (NOT IMPLEMENTED)."
     )
     sys.exit()
