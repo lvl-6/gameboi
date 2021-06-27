@@ -44,7 +44,7 @@ class Hello(commands.Cog):
     @commands.Cog.listener()
     async def on_member_join(self, member):
         """Greet members as they join"""
-        if channel is not None:
+        if channel is not None: # if this fails, try "self.bot.channel" instead.
             room_general = self.bot.get_channel(channel_ids['general'])
             room_lobby = self.bot.get_channel(channel_ids['lobby'])
             room_botcommand = self.bot.get_channel(channel_ids['bot_commands'])

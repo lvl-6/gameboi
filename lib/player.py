@@ -9,11 +9,13 @@
 # player.
 # 
 ###############################################################################
-
+import gb
 from lib.game import Game, GameList
 from lib.session import Session
 #from database import Database
+import mariadb
 
+db = gb.db
 
 ###############################################################################
 # Class: Player
@@ -35,7 +37,8 @@ and is registered with the bot.
         sessions (List<Session>): List of Sessions this player has RSVPed.
     """
 
-    pkid = -1  # if it's -1, something is wrong
+    pkid = None
+    name = ''
     discord_id = ''
     steam_id = ''
     games = []
@@ -43,14 +46,40 @@ and is registered with the bot.
     guilds = ['']
     sessions = []
 
-    def __init__(self, pkid):
-        # This constructor should take a primary key "id" and use that to pull
-        # the player data from the database to populate member vars.
+    def __init__(self):
+        """
+        Constructor.
+        """
+        pass
+
+    def set_pkid(self, pkid):
+        """
+        Simple little setter for pkid.
+        @param pkid: the id we want to set self.pkid to.
+        @return: None.
+        """
         self.pkid = pkid
-        self.get_player_data()
 
     def get_player_data(self):
         """
-        Pull the player data from the database once the pkid is known and set.
+        Pull the basic player data from the database once the pkid is known and set.
         """
-        pass
+        if self.pkid == None:
+            raise Exception("self.pkid is None - set it before calling this function!")
+        try:
+            db.cur.execute("SELECT name,discordid,steamid64 FROM players WHERE id=%s",(self.pkid,))
+            for(name, discordid, steamid64) in gb.db.cur:
+                # Debug print
+                print(
+                    "Pulled player data...\n"
+                    "ID:\t\t" + str(self.pkid) + "\n"
+                    + "Name:\t\t" + name + "\n"
+                    + "Discord ID:\t" + discordid + "\n"
+                    + "SteamID64:\t" + steamid64
+                )
+                # Set the values
+                self.name = name
+                self.discord_id = discordid
+                self.steam_id = steamid64
+        except mariadb.Error as e:
+            print(f"SQL error receiving player details from database: {e}")
