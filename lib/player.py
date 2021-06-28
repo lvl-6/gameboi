@@ -9,6 +9,7 @@
 # player.
 # 
 ###############################################################################
+
 import gb
 from lib.game import Game, GameList
 from lib.session import Session
@@ -43,8 +44,8 @@ and is registered with the bot.
     discord_id = ''
     steam_id = ''
     games = []
-    availability = 0  # should be some sort of Schedule datatype (i.e. 24x7 array list)
-    guilds = ['']
+    availability = 0  # TODO: NOT YET IMPLEMENTED! Should be some sort of Schedule datatype (i.e. 24x7 array list)
+    guilds = [''] # TODO: NOT YET IMPLEMENTED! Create new table "player_guilds" in db with compound key but only 1 FK.
     sessions = []
 
     def __init__(self):
