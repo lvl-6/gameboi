@@ -63,6 +63,8 @@ class Session:
         """
         if self.pkid is None:
             raise Exception("self.pkid is None - set it before calling this function!")
+
+        db.open()
         try:
             db.cur.execute("SELECT gameid,datetime,server FROM sessions WHERE id=%s", (self.pkid,))
             for(gameid, datetime, server) in db.cur:
@@ -82,3 +84,4 @@ class Session:
                 self.server = server
         except mariadb.Error as e:
             print(f"SQL error receiving player details from database: {e}")
+        db.close()

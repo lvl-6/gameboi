@@ -37,6 +37,12 @@ class Database:
     cur = None  # the database cursor
 
     def __init__(self):
+        """
+        Constructor.
+        """
+        pass
+
+    def open(self):
         try:
             self.conn = mariadb.connect(
                 user=user,
@@ -49,6 +55,10 @@ class Database:
         except mariadb.Error as e:
             print(f'Error connecting to MariaDB platform: {e}')
         self.cur = self.conn.cursor()
+
+    def close(self):
+        self.conn.close()
+        print("Closed connection to MariaDB platform.")
 
 
 ###############################################################################
