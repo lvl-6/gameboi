@@ -63,8 +63,9 @@ class Session:
         """
         if self.pkid is None:
             raise Exception("self.pkid is None - set it before calling this function!")
+
+        db.open()
         try:
-            db.open()
             db.cur.execute("SELECT gameid,datetime,server FROM sessions WHERE id=%s", (self.pkid,))
             for(gameid, datetime, server) in db.cur:
                 # Debug print

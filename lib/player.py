@@ -67,8 +67,9 @@ and is registered with the bot.
         """
         if self.pkid is None:
             raise Exception("self.pkid is None - set it before calling this function!")
+
+        db.open()
         try:
-            db.open()
             db.cur.execute("SELECT name,discordid,steamid64 FROM players WHERE id=%s", (self.pkid,))
             for(name, discordid, steamid64) in db.cur:
                 # Debug print
