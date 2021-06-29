@@ -68,6 +68,7 @@ and is registered with the bot.
         if self.pkid is None:
             raise Exception("self.pkid is None - set it before calling this function!")
         try:
+            db.open()
             db.cur.execute("SELECT name,discordid,steamid64 FROM players WHERE id=%s", (self.pkid,))
             for(name, discordid, steamid64) in db.cur:
                 # Debug print
@@ -84,3 +85,4 @@ and is registered with the bot.
                 self.steam_id = steamid64
         except mariadb.Error as e:
             print(f"SQL error receiving player details from database: {e}")
+        db.close()
