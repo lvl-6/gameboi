@@ -37,8 +37,8 @@ class Session:
 
     pkid = None
     game = None
-    date = None # Format: YYYY-MM-DD
-    time = None # Format: HH:MM:SS
+    date = None  # Format: YYYY-MM-DD
+    time = None  # Format: HH:MM:SS
     options = []
     players = {}
     server = ''
@@ -61,10 +61,10 @@ class Session:
         """
         Pull the basic session data from the database once the pkid is known and set.
         """
-        if self.pkid == None:
+        if self.pkid is None:
             raise Exception("self.pkid is None - set it before calling this function!")
         try:
-            db.cur.execute("SELECT gameid,datetime,server FROM sessions WHERE id=%s",(self.pkid,))
+            db.cur.execute("SELECT gameid,datetime,server FROM sessions WHERE id=%s", (self.pkid,))
             for(gameid, datetime, server) in db.cur:
                 # Debug print
                 print(
@@ -75,10 +75,10 @@ class Session:
                     + "Server:\t\t" + server
                 )
                 # Set the values
-                self.game = None # TODO: Get game from table "games" by gameid here.
+                self.game = None  # TODO: Get game from table "games" by gameid here.
                 # Yep it's also called "datetime" in the db... not to be confused with the datetime module. Woops.
-                self.date = datetime.date() # This is our "datetime" object from the db...
-                self.time = datetime.time() # Same...
+                self.date = datetime.date()  # This is our "datetime" object from the db...
+                self.time = datetime.time()  # Same...
                 self.server = server
         except mariadb.Error as e:
             print(f"SQL error receiving player details from database: {e}")

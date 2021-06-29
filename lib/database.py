@@ -9,7 +9,7 @@
 #
 ###############################################################################
 
-import mariadb # May require rewrite if I end up using another DBMS
+import mariadb  # May require rewrite if I end up using another DBMS
 import configparser
 
 ###############################################################################
@@ -17,7 +17,7 @@ import configparser
 ###############################################################################
 
 config = configparser.ConfigParser()
-config.read('settings.cfg') # settings.cfg in the project root (next to gb.py)
+config.read('settings.cfg')  # settings.cfg in the project root (next to gb.py)
 config = config['DATABASE']
 
 # Edit these to point it to a different server/database.
@@ -33,8 +33,8 @@ database = 'gameboi'            # The specific database on that server
 ###############################################################################
 
 class Database:
-    conn = None # the database connection
-    cur = None # the database cursor
+    conn = None  # the database connection
+    cur = None  # the database cursor
 
     def __init__(self):
         try:
@@ -55,4 +55,4 @@ class Database:
 # Instance
 ###############################################################################
 
-db = Database() # This will be used throughout the project
+db = Database()  # This will be used throughout the project

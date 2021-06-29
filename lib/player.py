@@ -44,7 +44,7 @@ and is registered with the bot.
     steam_id = ''
     games = []
     availability = 0  # TODO: NOT YET IMPLEMENTED! Should be some sort of Schedule datatype (i.e. 24x7 array list)
-    guilds = [''] # TODO: NOT YET IMPLEMENTED! Create new table "player_guilds" in db with compound key but only 1 FK.
+    guilds = ['']  # TODO: NOT YET IMPLEMENTED! Create new table "player_guilds" in db with compound key but only 1 FK.
     sessions = []
 
     def __init__(self):
@@ -65,10 +65,10 @@ and is registered with the bot.
         """
         Pull the basic player data from the database once the pkid is known and set.
         """
-        if self.pkid == None:
+        if self.pkid is None:
             raise Exception("self.pkid is None - set it before calling this function!")
         try:
-            db.cur.execute("SELECT name,discordid,steamid64 FROM players WHERE id=%s",(self.pkid,))
+            db.cur.execute("SELECT name,discordid,steamid64 FROM players WHERE id=%s", (self.pkid,))
             for(name, discordid, steamid64) in db.cur:
                 # Debug print
                 print(
