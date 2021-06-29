@@ -29,6 +29,7 @@ class Player:
     Variables:
         pkid (int): The primary key from the database which refers to this
 player.
+        name (str): The player's preferred name.
         discord_id (str): The player's Discord ID.
         steam_id (str): The player's Steam ID (optional).
         games (GameList): List of games owned by the player.
