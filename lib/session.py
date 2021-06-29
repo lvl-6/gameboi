@@ -83,5 +83,5 @@ class Session:
                 self.time = datetime.time()  # Same...
                 self.server = server
         except mariadb.Error as e:
-            print(f"SQL error receiving player details from database: {e}")
+            print(f"SQL error receiving session details from database: {e}")
         db.close()
