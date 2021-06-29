@@ -20,7 +20,6 @@ import lib.logging as logging
 
 version = '0.0.1'
 bot_token = os.getenv('GBOI_TOKEN')
-#db = Database()
 
 
 ###############################################################################
