@@ -23,7 +23,7 @@ member_id_list = ['']
 class Account(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-    
+
     @commands.command()
     async def register(self, ctx):
         """Register an account with the bot"""
@@ -46,13 +46,12 @@ class Account(commands.Cog):
         """Create a Player account for a given member"""
         # TODO: Should utilise Player class once implemented!
         global member_id_list
-        if member == None:
+        if member is None:
             # Temporary error return (should probably throw a proper exception).
             return 'Error! No discord.Member was passed to createAccount().'
         else:
-            member_id_list.append( str(member.id) )
+            member_id_list.append(str(member.id))
             return 'Account created successfully for {0.id}!'.format(member)
-
 
     def accountExists(member_id: str):
         """Check if a player account exists"""

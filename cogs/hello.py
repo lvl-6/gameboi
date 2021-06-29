@@ -25,11 +25,11 @@ greeting_msg = ('Hello and welcome to the guild, {0.mention}!\n'
 
 # Configure relevant channel ID's in this dictionary
 # Move to another cog one day
-channel_ids =   {
-                'welcome': 123456789,
-                'general': 123456789,
-                'lobby': 123456789,
-                'bot_commands': 123456789,
+channel_ids = {
+            'welcome': 123456789,
+            'general': 123456789,
+            'lobby': 123456789,
+            'bot_commands': 123456789,
                 }
 
 
@@ -44,13 +44,13 @@ class Hello(commands.Cog):
     @commands.Cog.listener()
     async def on_member_join(self, member):
         """Greet members as they join"""
-        if channel is not None: # if this fails, try "self.bot.channel" instead.
+        if channel is not None:  # if this fails, try "self.bot.channel" instead.
             room_general = self.bot.get_channel(channel_ids['general'])
             room_lobby = self.bot.get_channel(channel_ids['lobby'])
             room_botcommand = self.bot.get_channel(channel_ids['bot_commands'])
             await channel.send(
                             greeting_msg.format(member, room_general,
-                            room_lobby, room_botcommand)
+                                                room_lobby, room_botcommand)
                             )
 
     @commands.command()
