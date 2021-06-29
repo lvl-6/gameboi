@@ -49,3 +49,10 @@ class Database:
         except mariadb.Error as e:
             print(f'Error connecting to MariaDB platform: {e}')
         self.cur = self.conn.cursor()
+
+
+###############################################################################
+# Instance
+###############################################################################
+
+db = Database() # This will be used throughout the project
