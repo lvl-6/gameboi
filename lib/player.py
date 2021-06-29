@@ -10,13 +10,12 @@
 # 
 ###############################################################################
 
-import gb
 from lib.game import Game, GameList
 from lib.session import Session
-#from database import Database
+import lib.database
 import mariadb
 
-db = gb.db
+db = lib.database.db
 
 
 ###############################################################################
@@ -70,7 +69,7 @@ and is registered with the bot.
             raise Exception("self.pkid is None - set it before calling this function!")
         try:
             db.cur.execute("SELECT name,discordid,steamid64 FROM players WHERE id=%s",(self.pkid,))
-            for(name, discordid, steamid64) in gb.db.cur:
+            for(name, discordid, steamid64) in db.cur:
                 # Debug print
                 print(
                     "Pulled player data...\n"

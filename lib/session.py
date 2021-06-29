@@ -10,11 +10,11 @@
 # 
 ###############################################################################
 
-import gb
+import lib.database
 import mariadb
 import datetime
 
-db = gb.db
+db = lib.database.db
 
 
 ###############################################################################
@@ -65,7 +65,7 @@ class Session:
             raise Exception("self.pkid is None - set it before calling this function!")
         try:
             db.cur.execute("SELECT gameid,datetime,server FROM sessions WHERE id=%s",(self.pkid,))
-            for(gameid, datetime, server) in gb.db.cur:
+            for(gameid, datetime, server) in db.cur:
                 # Debug print
                 print(
                     "Pulled session data...\n"
