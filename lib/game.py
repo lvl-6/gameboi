@@ -81,4 +81,18 @@ class Game:
 ###############################################################################
 
 class GameList:
-    pass
+    """
+    Holds a list of games owned by a player or played at an event.
+    Yep it's kind of unnecessary but I designed it this way... may remove later.
+
+    Variables:
+        games (list): List of Game objects
+    """
+
+    list = []
+
+    def __init__(self):
+        """
+        Constructor
+        """
+        pass
