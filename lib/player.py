@@ -43,7 +43,7 @@ and is registered with the bot.
     name = ''
     discord_id = ''
     steam_id = ''
-    games = []
+    games = GameList()
     availability = 0  # TODO: NOT YET IMPLEMENTED! Should be some sort of Schedule datatype (i.e. 24x7 array list)
     guilds = ['']  # TODO: NOT YET IMPLEMENTED! Create new table "player_guilds" in db with compound key but only 1 FK.
     sessions = []
@@ -87,4 +87,39 @@ and is registered with the bot.
                 self.steam_id = steamid64
         except mariadb.Error as e:
             print(f"SQL error receiving player details from database: {e}")
+        db.close()
+
+    def get_owned_games(self):
+        """
+        Get all the games owned by this player and put them into games list.
+        """
+        self.games.list.clear()  # Clear this first in case this isn't the first time it was called
+        db.open()
+        try:
+            # Join data from games table to player_games bridge table
+            db.cur.execute(
+                "SELECT player_games.gameid,"
+                "games.name, games.icon "
+                "FROM player_games INNER JOIN games "
+                "ON player_games.gameid=games.id WHERE playerid=%s", (self.pkid,)
+            )
+            for(gameid, name, icon) in db.cur:
+                # Debug print
+                print(
+                    "Pulled game data...\n"
+                    "PlayerID:\t" + str(self.pkid) + "\n"
+                    + "GameID:\t\t" + str(gameid) + "\n"
+                    + "Name:\t\t" + name + "\n"
+                    + "Icon Path:\t" + icon
+                )
+                # Create Game object
+                current_game = lib.game.Game()
+                current_game.pkid = gameid
+                current_game.name = name
+                current_game.icon = icon
+                # Add game to list of owned games
+                self.games.list.append(current_game)
+
+        except mariadb.Error as e:
+            print(f"SQL error receiving player-owned games from database: {e}")
         db.close()
