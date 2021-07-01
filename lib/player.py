@@ -36,7 +36,7 @@ player.
         availability (Schedule): Times/days the player plans to be available.
         guilds (List<str>): List of guilds in which this player is a member
 and is registered with the bot.
-        sessions (List<Session>): List of Sessions this player has RSVPed.
+        sessions (dict): List of Sessions this player has RSVPed. Dict Key: Session, Value: RSVP.
     """
 
     pkid = None
@@ -46,7 +46,7 @@ and is registered with the bot.
     games = GameList()
     availability = 0  # TODO: NOT YET IMPLEMENTED! Should be some sort of Schedule datatype (i.e. 24x7 array list)
     guilds = ['']  # TODO: NOT YET IMPLEMENTED! Create new table "player_guilds" in db with compound key but only 1 FK.
-    sessions = []
+    sessions = {}  # Key: Session, Value: RSVP.
 
     def __init__(self):
         """
@@ -119,7 +119,49 @@ and is registered with the bot.
                 current_game.icon = icon
                 # Add game to list of owned games
                 self.games.list.append(current_game)
-
         except mariadb.Error as e:
             print(f"SQL error receiving player-owned games from database: {e}")
         db.close()
+
+    def get_sessions(self):
+        """
+        Get all the Sessions that this Player has responded to and put them into sessions list.
+        """
+        self.sessions.clear()  # Clear this first in case this isn't the first time it was called
+        db.open()
+        try:
+            # Join data from sessions table to session_players bridge table
+            db.cur.execute(
+                "SELECT session_players.sessionid,"
+                "session_players.rsvp, sessions.gameid,"
+                "sessions.datetime, sessions.server "
+                "FROM session_players INNER JOIN sessions "
+                "ON session_players.sessionid=sessions.id WHERE playerid=%s", (self.pkid,)
+            )
+            for(sessionid, rsvp, gameid, datetime, server) in db.cur:
+                # Debug print
+                print(
+                    "Pulled session data...\n"
+                    "PlayerID:\t" + str(self.pkid) + "\n"
+                    + "SessionID:\t" + str(sessionid) + "\n"
+                    + "GameID:\t\t" + str(gameid) + "\n"
+                    + "RSVP:\t\t" + str(rsvp) + "\n"
+                    + "Date / Time:\t" + str(datetime) + "\n"
+                    + "Server:\t\t" + server
+                )
+                # Create Session & Game objects
+                current_session = lib.session.Session()
+                current_session.pkid = sessionid
+                current_game = lib.game.Game()
+                current_game.pkid = gameid
+                current_game.get_game_data()
+                current_session.game = current_game
+                # TODO: convert rsvp to an enum or something for readability
+                current_session.date = datetime.date()  # This is our "datetime" object from the db...
+                current_session.time = datetime.time()  # Same...
+                current_session.server = server
+                # Add session to dict of RSVP'd Sessions
+                self.sessions[current_session] = rsvp
+        except mariadb.Error as e:
+            print(f"SQL error receiving player-owned games from database: {e}")
+        # Don't need to close apparently because get_game_data() already closed it... TODO: Investigate.
