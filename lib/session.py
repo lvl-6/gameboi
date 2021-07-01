@@ -85,3 +85,14 @@ class Session:
         except mariadb.Error as e:
             print(f"SQL error receiving session details from database: {e}")
         db.close()
+
+    def __hash__(self):
+        return hash(self.pkid)  # Yes this just returns the pkid... do I even need to hash? Dunno.
+
+    def __eq__(self, other):
+        return (self.pkid) == (other.pkid)  # we're only comparing by pkid because it should be unique anyway.
+
+    def __ne__(self, other):
+        # To avoid having both x==y and x!=y
+        # true at the same time
+        return not (self == other)
