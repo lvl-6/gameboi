@@ -26,7 +26,8 @@ pip install discord mariadb
 If I've missed anything, just read the errors, it will be pretty obvious.
 
 ## Other requirements
-This project uses a MariaDB (MySQL) database. Once it's more fleshed out I will write the schema here for all to see.
+This project uses a MariaDB (MySQL) database. Go here for info about the schema: [The Database](https://github.com/lvl-6/gameboi/wiki/The-Database)
+
 For testing, I recommend you launch a VM with RHEL/CentOS (or your preferred distro) and set up MariaDB on that.
 
 ## Further notes
