@@ -90,7 +90,7 @@ class Session:
         return hash(self.pkid)  # Yes this just returns the pkid... do I even need to hash? Dunno.
 
     def __eq__(self, other):
-        return (self.pkid) == (other.pkid)  # we're only comparing by pkid because it should be unique anyway.
+        return (self.pkid) == (other)  # we're only comparing by pkid because it should be unique anyway.
 
     def __ne__(self, other):
         # To avoid having both x==y and x!=y
