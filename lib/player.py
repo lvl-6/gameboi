@@ -11,7 +11,7 @@
 ###############################################################################
 
 from lib.game import Game, GameList
-from lib.session import Session
+import lib.session
 import lib.database
 import mariadb
 
@@ -156,11 +156,11 @@ and is registered with the bot.
                 current_game.pkid = gameid
                 current_game.get_game_data()
                 current_session.game = current_game
-                # TODO: convert rsvp to an enum or something for readability
                 current_session.date = datetime.date()  # This is our "datetime" object from the db...
                 current_session.time = datetime.time()  # Same...
                 current_session.server = server
                 # Add session to dict of RSVP'd Sessions
+                rsvp = lib.session.Rsvp(rsvp)
                 self.sessions[current_session] = rsvp
         except mariadb.Error as e:
             print(f"SQL error receiving player-owned games from database: {e}")

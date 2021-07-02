@@ -13,8 +13,15 @@
 import lib.database
 import mariadb
 import datetime
+from enum import Enum
 
 db = lib.database.db
+
+# An enum to hold RSVP status
+class Rsvp(Enum):
+    NO = 0
+    YES = 1
+    MAYBE = 2
 
 
 ###############################################################################
