@@ -75,6 +75,31 @@ class Game:
             print(f"SQL error receiving game details from database: {e}")
         db.close()
 
+    def get_links(self):
+        """
+        Pull the links for this game from the database.
+        """
+        if self.pkid is None:
+            raise Exception("self.pkid is None - set it before calling this function!")
+
+        db.open()
+        try:
+            db.cur.execute("SELECT name,link FROM game_links WHERE gameid=%s", (self.pkid,))
+            for (name, link) in db.cur:
+                # Debug print
+                print(
+                    "Pulled game link data...\n"
+                    "GameID:\t\t" + str(self.pkid) + "\n"
+                    + "Name:\t\t" + name + "\n"
+                    + "Link:\t\t" + link
+                )
+                # Set the values
+                self.name = name
+                self.links[name] = link
+        except mariadb.Error as e:
+            print(f"SQL error receiving game link details from database: {e}")
+        db.close()
+
 
 ###############################################################################
 # Class: GameList
