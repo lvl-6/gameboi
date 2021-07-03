@@ -17,6 +17,7 @@ from enum import Enum
 
 db = lib.database.db
 
+
 # An enum to hold RSVP status
 class Rsvp(Enum):
     NO = 0
@@ -89,6 +90,27 @@ class Session:
                 self.date = datetime.date()  # This is our "datetime" object from the db...
                 self.time = datetime.time()  # Same...
                 self.server = server
+        except mariadb.Error as e:
+            print(f"SQL error receiving session details from database: {e}")
+        db.close()
+
+    def get_options(self):
+        """
+        Get the relevant options for this session (i.e. gamemode, map, team size, params, etc)
+        """
+        self.options.clear()
+        db.open()
+        try:
+            db.cur.execute("SELECT option FROM session_options WHERE sessionid=%s", (self.pkid,))
+            for (option) in db.cur:
+                # Debug print
+                print(
+                    "Pulled session options data...\n"
+                    + "ID:\t\t" + str(self.pkid) + "\n"
+                    + "Option:\t\t" + option[0]  # Index required because option is given as a single-item tuple.
+                )
+                # Add each option to the options list
+                self.options.append(option[0])
         except mariadb.Error as e:
             print(f"SQL error receiving session details from database: {e}")
         db.close()
