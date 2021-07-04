@@ -11,6 +11,7 @@
 ###############################################################################
 
 import lib.database
+import lib.player
 import mariadb
 import datetime
 from enum import Enum
@@ -115,11 +116,50 @@ class Session:
             print(f"SQL error receiving session details from database: {e}")
         db.close()
 
+    def get_players(self):
+        """
+        Get the Players who have RSVP'd this Session.
+        """
+        self.players.clear()  # Clear this in case for some reason pkid was changed instead of creating a new Session.
+        db.open()
+        try:
+            db.cur.execute(
+                "SELECT session_players.playerid, session_players.rsvp, "
+                "players.name, players.discordid, players.steamid64 "
+                "FROM session_players INNER JOIN players "
+                "ON session_players.playerid=players.id WHERE session_players.sessionid=%s", (self.pkid,)
+            )
+            for (playerid, rsvp, name, discordid, steamid64) in db.cur:
+                rsvp = lib.session.Rsvp(rsvp)
+                # Debug print
+                print(
+                    "Pulled player data...\n"
+                    "SessionID:\t" + str(self.pkid) + "\n"
+                    + "PlayerID:\t" + str(playerid) + "\n"
+                    + "Name:\t\t" + name + "\n"
+                    + "RSVP:\t\t" + rsvp.name + "\n"
+                    + "DiscordID:\t" + discordid + "\n"
+                    + "SteamID64:\t" + steamid64
+                )
+                # If this player has given any RSVP except NO, it's time to do the things...
+                if rsvp == Rsvp.YES or rsvp == Rsvp.MAYBE:
+                    # Create the Player object
+                    current_player = lib.player.Player()
+                    current_player.pkid = playerid
+                    current_player.name = name
+                    current_player.discord_id = discordid
+                    current_player.steam_id = steamid64
+                    # Add to the dict
+                    self.players[current_player] = rsvp
+        except mariadb.Error as e:
+            print(f"SQL error receiving player details from database: {e}")
+        db.close()
+
     def __hash__(self):
         return hash(self.pkid)  # Yes this just returns the pkid... do I even need to hash? Dunno.
 
     def __eq__(self, other):
-        return (self.pkid) == (other)  # we're only comparing by pkid because it should be unique anyway.
+        return self.pkid == other  # we're only comparing by pkid because it should be unique anyway.
 
     def __ne__(self, other):
         # To avoid having both x==y and x!=y
